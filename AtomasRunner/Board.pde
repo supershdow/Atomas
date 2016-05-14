@@ -7,7 +7,7 @@ class Board {
   Board(){
     board = new ArrayList<GamePiece>();
     score = 0;
-    maxSize = 20;
+    maxSize = 10;
   }
   
   void addPiece(GamePiece piece, int location){
@@ -32,13 +32,26 @@ class Board {
   void combine(){
     for (int i = 0; i < board.size(); i++)
       if (board.get(i).getValue() == -1){
-        println(i);
-        if (board.get((i - 1) % board.size()).getValue() == board.get((i + 1) % board.size()).getValue()){
-          score += board.get((i - 1) % board.size()).getValue();
-          board.set((i - 1) % board.size(), pieces[AtomasRunner.mode][board.get((i - 1) % board.size()).getValue()]);
+        println(i + " " + board.size());
+        if (board.size() <= 2)
+          break;
+        if (i == 0 && board.get((board.size() - 1)).getValue() == board.get((i + 1)).getValue()){
+          score += board.get((board.size() - 1)).getValue();
+          board.set((board.size() - 1), pieces[AtomasRunner.mode][board.get((board.size() - 1)).getValue()]);
           board.remove(i);
           board.remove(i);
-          
+        }
+        else if (i == board.size() - 1 && board.get((i - 1)).getValue() == board.get(0).getValue()){
+          score += board.get((i - 1)).getValue();
+          board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1)).getValue()]);
+          board.remove(i);
+          board.remove(i);
+        }
+        else if (i > 0 && i < board.size() - 1 && board.get(i - 1).getValue() == board.get((i + 1)).getValue()){
+          score += board.get((i - 1)).getValue();
+          board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1) % board.size()).getValue()]);
+          board.remove(i);
+          board.remove(i);
         }
       }
   }
