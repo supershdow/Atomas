@@ -73,19 +73,19 @@ void mouseClicked() {
         if (mouseX >(int)(150 * cos(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseX < (int)(150 * cos(radians((float)(180 * 2 * i / board.size())))) + 200
           && mouseY > (int)(150 * sin(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseY < (int)(150 * sin(radians((float)(180 * 2 * i / board.size())))) + 200) {
           board.addPiece(add, i);
-          return;
+          break;
         } else if (mouseX <(int)(150 * cos(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseX > (int)(150 * cos(radians((float)(180 * 2 * i / board.size())))) + 200
           && mouseY > (int)(150 * sin(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseY < (int)(150 * sin(radians((float)(180 * 2 * i / board.size())))) + 200) {
           board.addPiece(add, i);
-          return;
+          break;
         } else if (mouseX >(int)(150 * cos(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseX < (int)(150 * cos(radians((float)(180 * 2 * i / board.size())))) + 200
           && mouseY < (int)(150 * sin(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseY > (int)(150 * sin(radians((float)(180 * 2 * i / board.size())))) + 200) {
           board.addPiece(add, i);
-          return;
+          break;
         } else if (mouseX <(int)(150 * cos(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseX > (int)(150 * cos(radians((float)(180 * 2 * i / board.size())))) + 200
           && mouseY < (int)(150 * sin(radians((float)(180 * 2 * (i-1) / board.size())))) + 200 && mouseY > (int)(150 * sin(radians((float)(180 * 2 * i / board.size())))) + 200) {
           board.addPiece(add, i);
-          return;
+          break;
         }
     }
     add = null;

@@ -7,7 +7,7 @@ class Board {
   Board(){
     String[][] names = {{"Chris","Josh","Ish","Nick","Ray","Tomer","Dalton","Karl","Wang","Benji","Yuya","Adam","Arian","Winston","Pia","Patton","Mitchell","Uriah","Daniel","Skip"}, 
       {}, {}};
-    pieces = new GamePiece[3][20];
+    pieces = new GamePiece[3][100];
     for (int i = 0; i < names.length; i++)
       for (int j = 0; j < names[i].length; j++)
         pieces[i][j] = new GamePiece(color(0,0,255), j + 1, names[i][j]);
@@ -44,19 +44,19 @@ class Board {
       if (board.get(i).getValue() == -1){
         if (board.size() <= 2)
           break;
-        if (i == 0 && board.get((board.size() - 1)).getValue() == board.get((i + 1)).getValue()){
+        while (i == 0 && board.get((board.size() - 1)).getValue() == board.get((i + 1)).getValue()){
           score += board.get((board.size() - 1)).getValue();
           board.set((board.size() - 1), pieces[AtomasRunner.mode][board.get((board.size() - 1)).getValue()]);
           board.remove(i);
           board.remove(i);
         }
-        else if (i == (board.size() - 1) && board.get((i - 1)).getValue() == board.get(0).getValue()){
+        while (i == (board.size() - 1) && board.get((i - 1)).getValue() == board.get(0).getValue()){
           score += board.get((i - 1)).getValue();
           board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1)).getValue()]);
           board.remove(i);
-          board.remove(i);
+          board.remove(0);
         }
-        else if (i > 0 && i < board.size() - 1 && board.get(i - 1).getValue() == board.get((i + 1)).getValue()){
+        while (i > 0 && i < board.size() - 1 && board.get(i - 1).getValue() == board.get((i + 1)).getValue()){
           score += board.get((i - 1)).getValue();
           board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1) % board.size()).getValue()]);
           board.remove(i);
@@ -67,7 +67,7 @@ class Board {
   GamePiece selectPiece(){
   if (Math.random() < .2)
     return new GamePiece(color(255,0,0), -1, "+");
-  return pieces[AtomasRunner.mode][(int)(Math.random() * pieces[mode].length)];
+  return pieces[AtomasRunner.mode][(int)(Math.random() * score * 2) + (int)(score/5)];
 }
 
 boolean gameOver(){
