@@ -1,9 +1,7 @@
-
-
 Board board;
 static int mode;
-static GamePiece[][] pieces = {{new GamePiece(blue(), 1, "Chris")}, {}, {}};
 boolean started;
+GamePiece add;
 
 
 void setup(){
@@ -31,7 +29,16 @@ void draw(){
       startGame();
       started = true;
     }
-    board.displayBoard();
+    else {
+      if (add == null)
+        add = board.selectPiece();
+      board.combine();
+      board.displayBoard();
+      fill(add.getColor());
+      add.drawPiece(200,200);
+      if (board.gameOver())
+        setup();
+    }
   }
 }
 
@@ -42,15 +49,11 @@ void startGame(){
   ellipse(200,200,300,300);
   board = new Board();
   fill(255,0,0);
-  board.addPiece(pieces[mode][0],0);
+  board.addPiece(board.pieces[mode][0],0);
   board.displayBoard();
 }
 
-GamePiece selectPiece(){
-  if (Math.random() < .2)
-    return new GamePiece(red(), -1, "+");
-  return pieces[mode][(int)(Math.random() * pieces[mode].length)];
-}
+
 
 void mouseClicked(){
   if (mode == -1){
@@ -60,6 +63,11 @@ void mouseClicked(){
       mode = 1;
     else if (mouseX > 266)
       mode = 2;
+    mode = 0;
     
+  }
+  else {
+    board.addPiece(add, 0);
+    add = null;
   }
 }

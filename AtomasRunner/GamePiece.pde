@@ -25,8 +25,14 @@ class GamePiece {
     ellipse(locX, locY, 40, 40);
     fill(0,0,0);
     textSize(10);
-    text(description, locX - 10 , locY - 2);
-    text(""+ pieceValue, locX - 5, locY + 8);
+    if (pieceValue != -1){
+      text(description, locX - 10 , locY - 2);
+      text(""+ pieceValue, locX - 5, locY + 8);
+    }
+    else {
+      text(description, locX - 5, locY + 2);
+    }
+    
   }
   
   void addDescription(String add){
