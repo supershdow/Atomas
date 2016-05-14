@@ -1,7 +1,10 @@
+import processing.sound.*;
+
 Board board;
 static int mode;
 boolean started;
 GamePiece add;
+SoundFile ding;
 
 
 void setup() {
@@ -20,6 +23,7 @@ void setup() {
   text("Teacher Mode", 420, 200);
   started = false;
   mode = -1;
+  ding = new SoundFile(this, "ding.mp3");
 }
 
 void draw() {

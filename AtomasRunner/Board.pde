@@ -1,3 +1,5 @@
+
+
 class Board {
   private ArrayList<GamePiece> board;
   private int score;
@@ -14,6 +16,7 @@ class Board {
         pieces[i][j] = new GamePiece(color(0, 0, 255), j + 1, names[i][j]);
     board = new ArrayList<GamePiece>();
     score = 0;
+    
   }
 
   void addPiece(GamePiece piece, int location) {
@@ -57,6 +60,7 @@ class Board {
           score += (int)(Math.pow(chains + 1, 2));
           board.set(i, pieces[mode][combineValue(chains, i) - 1]);
           for (int j = 1; j <= chains && board.size() > 2; j++) {
+            ding.play();
             //println((i + j) % board.size() + " "  + (i - j + board.size()) % board.size() + " " + board.size());
             board.remove((i + j) % board.size());
             //println(i + " " + j + " " + board.size());
@@ -68,17 +72,17 @@ class Board {
         }
       }
   }
-  
-  int combineValue(int chains, int center){
-      int val = 0;
-      val = board.get((++center + board.size()) % board.size()).getValue();
-      
-      for (int i = 1; i <= chains; i++)
-        if (board.get(((center + i) % board.size())).getValue() > val)
-          val = board.get(((center + i) % board.size())).getValue() + 1;
-        else
-          val++;
-      return val;
+
+  int combineValue(int chains, int center) {
+    int val = 0;
+    val = board.get((++center + board.size()) % board.size()).getValue();
+
+    for (int i = 1; i <= chains; i++)
+      if (board.get(((center + i) % board.size())).getValue() > val)
+        val = board.get(((center + i) % board.size())).getValue() + 1;
+      else
+        val++;
+    return val;
   }
 
   int chain(int left, int right) {
