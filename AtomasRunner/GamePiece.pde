@@ -23,11 +23,12 @@ class GamePiece {
 
   void drawPiece(int locX, int locY) {
     ellipse(locX, locY, 60, 60);
-    fill(0, 0, 0);
-    textSize(10);
+    fill(0,0,0);
+    textSize(12);
     if (pieceValue != -1) {
-      text(description, locX - 10, locY - 2);
-      text(""+ pieceValue, locX - 5, locY + 8);
+      fill(255, 255, 255);
+      text(description, locX - 12, locY - 2);
+      text(""+ pieceValue, locX - 7, locY + 9);
     } else {
       text(description, locX - 5, locY + 2);
     }

@@ -2,7 +2,7 @@ class Board {
   private ArrayList<GamePiece> board;
   private int score;
   GamePiece[][] pieces;
-  private int maxSize;
+  private static final int maxSize = 20;
 
   Board() {
     String[][] names = {{"Chris", "Josh", "Ish", "Nick", "Ray", "Tomer", "Dalton", "Karl", "Wang", "Benji", "Yuya", "Adam", "Arian", "Winston", "Pia", "Patton", "Mitchell", "Uriah", "Daniel", "Skip"}, 
@@ -14,7 +14,6 @@ class Board {
         pieces[i][j] = new GamePiece(color(0, 0, 255), j + 1, names[i][j]);
     board = new ArrayList<GamePiece>();
     score = 0;
-    maxSize = 10;
   }
 
   void addPiece(GamePiece piece, int location) {
@@ -54,13 +53,13 @@ class Board {
           right -= board.size();
         if (left != right && board.get(left).getValue() == board.get(right).getValue() && board.get(left).getValue() != -1 && board.get(right).getValue() != -1) {
           chains = chain(left, right);
-          println(chains);
+          //println(chains);
           score += (int)(Math.pow(chains + 1, 2));
-          board.set(i, pieces[mode][board.get(left).getValue() + chains - 1]);
+          board.set(i, pieces[mode][combineValue(chains, i) - 1]);
           for (int j = 1; j <= chains && board.size() > 2; j++) {
-            println((i + j) % board.size() + " "  + (i - j + board.size()) % board.size() + " " + board.size());
+            //println((i + j) % board.size() + " "  + (i - j + board.size()) % board.size() + " " + board.size());
             board.remove((i + j) % board.size());
-            println(i + " " + j + " " + board.size());
+            //println(i + " " + j + " " + board.size());
             if (board.size() > 1 && (i + j) % board.size() < (i - j + board.size()) % board.size())
               board.remove((i - j + board.size() - 1) % board.size());
             else if (board.size() > 1)
@@ -68,6 +67,18 @@ class Board {
           }
         }
       }
+  }
+  
+  int combineValue(int chains, int center){
+      int val = 0;
+      val = board.get((++center + board.size()) % board.size()).getValue();
+      
+      for (int i = 1; i <= chains; i++)
+        if (board.get(((center + i) % board.size())).getValue() > val)
+          val = board.get(((center + i) % board.size())).getValue() + 1;
+        else
+          val++;
+      return val;
   }
 
   int chain(int left, int right) {
