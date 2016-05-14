@@ -27,13 +27,13 @@ class Board {
 
   void displayBoard() {
     fill(100);
-    rect(0, 0, 400, 400);
+    rect(0, 0, 600, 600);
     fill(255);
-    ellipse(200, 200, 300, 300);
+    ellipse(300, 300, 400, 400);
     for (int i = 0; i < board.size(); i++) {
       fill(board.get(i).getColor());
-      board.get(i).drawPiece((int)(150 * cos(radians((float)(180 * 2 * i / board.size())))) + 200, 
-        (int)(150 * sin(radians((float)(180 * 2 * i / board.size())))) + 200);
+      board.get(i).drawPiece((int)(200 * cos(radians((float)(180 * 2 * i / board.size())))) + 300, 
+        (int)(200 * sin(radians((float)(180 * 2 * i / board.size())))) + 300);
     }
     fill(0);
     textSize(25);
@@ -41,30 +41,55 @@ class Board {
   }
 
   void combine() {
+    int chains;
     for (int i = 0; i < board.size(); i++)
       if (board.get(i).getValue() == -1) {
         if (board.size() <= 2)
           break;
-        if (i == 0 && board.get((board.size() - 1)).getValue() == board.get((i + 1)).getValue()) {
-          score += board.get((board.size() - 1)).getValue();
-          board.set((board.size() - 1), pieces[AtomasRunner.mode][board.get((board.size() - 1)).getValue()]);
-          board.remove(i);
-          board.remove(i);
-        } else if (i == (board.size() - 1) && board.get((i - 1)).getValue() == board.get(0).getValue()) {
-          score += board.get((i - 1)).getValue();
-          board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1)).getValue()]);
-          board.remove(i);
-          board.remove(0);
-        } else if (i > 0 && i < board.size() - 1 && board.get(i - 1).getValue() == board.get((i + 1)).getValue()) {
-          score += board.get((i - 1)).getValue();
-          board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1) % board.size()).getValue()]);
-          board.remove(i);
-          board.remove(i);
+        int left = i - 1;
+        int right = i + 1;
+        if (left < 0)
+          left += board.size();
+        if (right >= board.size())
+          right -= board.size();
+        if (left != right && board.get(left).getValue() == board.get(right).getValue() && board.get(left).getValue() != -1 && board.get(right).getValue() != -1) {
+          chains = chain(left, right);
+          println(chains);
+          score += (int)(Math.pow(chains + 1, 2));
+          board.set(i, pieces[mode][board.get(left).getValue() + chains - 1]);
+          for (int j = 1; j <= chains && board.size() > 2; j++) {
+            println((i + j) % board.size() + " "  + (i - j + board.size()) % board.size() + " " + board.size());
+            board.remove((i + j) % board.size());
+            println(i + " " + j + " " + board.size());
+            if (board.size() > 1 && (i + j) % board.size() < (i - j + board.size()) % board.size())
+              board.remove((i - j + board.size() - 1) % board.size());
+            else if (board.size() > 1)
+              board.remove((i - j + board.size()) % board.size());
+          }
         }
       }
   }
+
+  int chain(int left, int right) {
+    int chain = 0;
+    while (left < 0)
+      left += board.size();
+    while (right >= board.size())
+      right -= board.size();
+    while (board.size() > 2 && board.get(left).getValue() == board.get(right).getValue() && right != left && board.get(left).getValue() != -1 && board.get(right).getValue() != -1) {
+      left--;
+      right++;
+      chain++;
+      while (left < 0)
+        left += board.size();
+      while (right >= board.size())
+        right -= board.size();
+    }
+    return chain;
+  }
+
   GamePiece selectPiece() {
-    if (Math.random() < .2)
+    if (Math.random() < .4)
       return new GamePiece(color(255, 0, 0), -1, "+");
     return pieces[AtomasRunner.mode][(int)(Math.random() * score / 5) + (int)(score/10)];
   }
