@@ -3,33 +3,34 @@ class Board {
   private int score;
   GamePiece[][] pieces;
   private int maxSize;
-  
-  Board(){
-    String[][] names = {{"Chris","Josh","Ish","Nick","Ray","Tomer","Dalton","Karl","Wang","Benji","Yuya","Adam","Arian","Winston","Pia","Patton","Mitchell","Uriah","Daniel","Skip"}, 
-      {}, {}};
+
+  Board() {
+    String[][] names = {{"Chris", "Josh", "Ish", "Nick", "Ray", "Tomer", "Dalton", "Karl", "Wang", "Benji", "Yuya", "Adam", "Arian", "Winston", "Pia", "Patton", "Mitchell", "Uriah", "Daniel", "Skip"}, 
+      {" H", "He", "Li", "Be", " B", " C", " N", " O", " F", "Ne", "Na", "Mg", "Al", "Si", " P", "S", "Cl", "Ar", " K", "Ca"}, 
+      {"Allen", "Asch", "Bausili", "Berger", "Brooks", "Brown", "Byun", "Cornish", "DeSilva", "Huth", "Ilany", "Kudlash", "Lerohl", "Goldsmith", "McConnell", "Qiu", "Radman", "Reingold", "Seoh", "Weng"}};
     pieces = new GamePiece[3][100];
     for (int i = 0; i < names.length; i++)
       for (int j = 0; j < names[i].length; j++)
-        pieces[i][j] = new GamePiece(color(0,0,255), j + 1, names[i][j]);
+        pieces[i][j] = new GamePiece(color(0, 0, 255), j + 1, names[i][j]);
     board = new ArrayList<GamePiece>();
     score = 0;
     maxSize = 10;
   }
-  
-  void addPiece(GamePiece piece, int location){
+
+  void addPiece(GamePiece piece, int location) {
     board.add(location, piece);
   }
-  
-  int size(){
+
+  int size() {
     return board.size();
   }
-  
-  void displayBoard(){
+
+  void displayBoard() {
     fill(100);
-    rect(0,0,400,400);
+    rect(0, 0, 400, 400);
     fill(255);
-    ellipse(200,200,300,300);
-    for (int i = 0; i < board.size(); i++){
+    ellipse(200, 200, 300, 300);
+    for (int i = 0; i < board.size(); i++) {
       fill(board.get(i).getColor());
       board.get(i).drawPiece((int)(150 * cos(radians((float)(180 * 2 * i / board.size())))) + 200, 
         (int)(150 * sin(radians((float)(180 * 2 * i / board.size())))) + 200);
@@ -38,25 +39,23 @@ class Board {
     textSize(25);
     text("Score: " + score, 0, 50);
   }
-  
-  void combine(){
+
+  void combine() {
     for (int i = 0; i < board.size(); i++)
-      if (board.get(i).getValue() == -1){
+      if (board.get(i).getValue() == -1) {
         if (board.size() <= 2)
           break;
-        while (i == 0 && board.get((board.size() - 1)).getValue() == board.get((i + 1)).getValue()){
+        if (i == 0 && board.get((board.size() - 1)).getValue() == board.get((i + 1)).getValue()) {
           score += board.get((board.size() - 1)).getValue();
           board.set((board.size() - 1), pieces[AtomasRunner.mode][board.get((board.size() - 1)).getValue()]);
           board.remove(i);
           board.remove(i);
-        }
-        while (i == (board.size() - 1) && board.get((i - 1)).getValue() == board.get(0).getValue()){
+        } else if (i == (board.size() - 1) && board.get((i - 1)).getValue() == board.get(0).getValue()) {
           score += board.get((i - 1)).getValue();
           board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1)).getValue()]);
           board.remove(i);
           board.remove(0);
-        }
-        while (i > 0 && i < board.size() - 1 && board.get(i - 1).getValue() == board.get((i + 1)).getValue()){
+        } else if (i > 0 && i < board.size() - 1 && board.get(i - 1).getValue() == board.get((i + 1)).getValue()) {
           score += board.get((i - 1)).getValue();
           board.set((i - 1), pieces[AtomasRunner.mode][board.get((i - 1) % board.size()).getValue()]);
           board.remove(i);
@@ -64,14 +63,13 @@ class Board {
         }
       }
   }
-  GamePiece selectPiece(){
-  if (Math.random() < .2)
-    return new GamePiece(color(255,0,0), -1, "+");
-  return pieces[AtomasRunner.mode][(int)(Math.random() * score * 2) + (int)(score/5)];
-}
+  GamePiece selectPiece() {
+    if (Math.random() < .2)
+      return new GamePiece(color(255, 0, 0), -1, "+");
+    return pieces[AtomasRunner.mode][(int)(Math.random() * score / 5) + (int)(score/10)];
+  }
 
-boolean gameOver(){
-  return board.size() >= maxSize;
-}
-
+  boolean gameOver() {
+    return board.size() >= maxSize;
+  }
 }
